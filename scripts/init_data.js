@@ -50,26 +50,26 @@ let teamNames = _.map(matches.teams, (team) => {
 //
 // console.log(getTeamFlagUrl('Colombia', flagUrls));
 
-// teams.forEach((team) => {
-//     Team.findOneAndDelete({'name': team.name}, (err) => {
-//         if (err) {console.log('delete team err!')}
-//     });
-//     let teamDoc = new Team();
-//     teamDoc.name = team.name;
-//     teamDoc.group = team.group;
-//     teamDoc.flagUrl = getTeamFlagUrl(team.name, flagUrls)
-//     console.log(teamDoc);
-//     let players = [];
-//     for(let i = 0; i < team.players.length; i++){
-//         let player = team.players[i];
-//         players.push(player);
-//     }
-//     teamDoc.players = players;
-//     teamDoc.save((err, team) => {
-//         if (err) { console.log(err) };
-//         console.log(team.name);
-//     })
-// });
+teams.forEach((team) => {
+    Team.findOneAndDelete({'name': team.name}, (err) => {
+        if (err) {console.log('delete team err!')}
+    });
+    let teamDoc = new Team();
+    teamDoc.name = team.name;
+    teamDoc.group = team.group;
+    teamDoc.flagUrl = getTeamFlagUrl(team.name, flagUrls)
+    console.log(teamDoc);
+    let players = [];
+    for(let i = 0; i < team.players.length; i++){
+        let player = team.players[i];
+        players.push(player);
+    }
+    teamDoc.players = players;
+    teamDoc.save((err, team) => {
+        if (err) { console.log(err) };
+        console.log(team.name);
+    })
+});
 
 _.keys(matches.groups).forEach((group) => {
     matches.groups[group].matches.forEach((match) => {
