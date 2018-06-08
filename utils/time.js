@@ -3,5 +3,5 @@ import _ from 'lodash';
 
 export const displayStartTime = (startTime, tz) => {
     let st = moment(startTime);
-    return st.tz(tz).format('YYYY-MM-DD hh:mm:ss UTCZ');
+    return st.tz(tz).format('YYYY-MM-DD HH:mm:ss UTCZ');
 };

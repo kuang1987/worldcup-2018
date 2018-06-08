@@ -42,7 +42,7 @@ export const User = {
       }
       if (params.data.matchGuessRecord.guess != match.homeTeam &&
           params.data.matchGuessRecord.guess != match.awayTeam){
-              params.data.matchGuessRecord.guess = null;
+              params.data.matchGuessRecord.guess = "draw";
           }
       let is_record_exist = false;
       for(let i = 0; i < user.matchGuessRecords.length; i++){
@@ -60,7 +60,7 @@ export const User = {
     //const user = models.User.findOneAndUpdate({_id: params.data._id}, params.data, {new: true}).select(projections).exec()
 
     if(params.data.timezone) {
-        const tz = await models.Tz.findOne({'offset': params.data.timezone})
+        const tz = await models.Tz.findOne({'value': params.data.timezone})
         if(!tz){
             throw new Error('Invalid timezone chosen!');
         }

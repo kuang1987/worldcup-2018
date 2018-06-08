@@ -50,7 +50,8 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     goldenPlayerGuessRecord: {
-        type: mongoose.Schema.Types.ObjectId
+        type: String,
+        default: ""
     },
     guessScore: {
         type: Number,

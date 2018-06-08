@@ -10,7 +10,7 @@ export const login = (req, res) => {
         if (err) throw err;
         console.log(user);
         if (!user || !user.comparePassword(req.body.password, user.hash_password)) {
-            return res.status(401).json({ message: 'Authentication failed. Invalid user or password.' });
+            return res.status(403).json({ message: 'Authentication failed. Invalid user or password.' });
         }
         if (user && user.comparePassword(req.body.password, user.hash_password) && user.password_need_change ){
             return res.status(401).json({ message: 'Password need change.' });
@@ -35,7 +35,7 @@ export const changePassword = (req, res) => {
     User.findOne({ email: req.body.email }, (err, user) => {
         if (err) throw err;
         if (!user || !user.comparePassword(req.body.old_password, user.hash_password)) {
-            return res.status(401).json({ message: 'Authentication failed. Invalid user or old password.' });
+            return res.status(403).json({ message: 'Authentication failed. Invalid user or old password.' });
         }
         if (user && user.comparePassword(req.body.old_password, user.hash_password)){
             if (req.body.new_password != req.body.new_password_confirm) {

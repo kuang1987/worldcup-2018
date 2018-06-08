@@ -18,7 +18,7 @@ export const MatchGuessInputType = new GraphQLInputObjectType({
             type: new GraphQLNonNull(GraphQLID)
         },
         guess: {
-            type: GraphQLID
+            type: GraphQLString
         }
     }
 });
@@ -69,8 +69,8 @@ export const UserRankingType = new GraphQLObjectType({
           type: GraphQLInt
       },
       goldenPlayerGuessRecord: {
-          type: GraphQLID
-      }  
+          type: GraphQLString
+      }
     }
 });
 
@@ -93,7 +93,7 @@ export const UserType = new GraphQLObjectType({
             type: new GraphQLList(MatchGuessRecordType)
         },
         goldenPlayerGuessRecord: {
-            type: GraphQLID
+            type: GraphQLString
         },
         timezone: {
             type: GraphQLString

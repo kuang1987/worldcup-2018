@@ -32,28 +32,38 @@ export const Match = {
         name: 'label',
         type: GraphQLString
     },
-    finished: {
-        name: 'finished',
+    started: {
+        name: 'started',
         type: GraphQLBoolean
     }
   },
   async resolve (root, params, options, info) {
-    console.log(info.fieldNodes[0]);
-    console.log(params);
+    let started = false;
     if (params.id){
       params._id = params.id;
       delete params.id;
+    }
+    if (params.started != undefined){
+        started = params.started;
+        delete params.started;
     }
     const projection = getProjection(info.fieldNodes[0]);
 
     const matches = await models.Match.find(params).select(projection).exec();
     const user = await models.User.findOne({_id: options.user._id}).exec();
-    return _.map(matches, (match) => {
-      if (match.startTime){
-        match.startTime = utils.displayStartTime(match.startTime, user.timezone);
-        return match;
-      }
-      return match;
-    });
+    let tz_matches = _.map(matches, (match) => {
+          if (match.startTime){
+            match.startTime = utils.displayStartTime(match.startTime, user.timezone);
+            return match;
+          }
+          return match;
+        });
+    return _.reduce(tz_matches, (res, match) => {
+        if (started == match.isMatchStarted(match.startTime)) {
+          res.push(match);
+        }
+        return res;
+    },[])
+
   }
 };

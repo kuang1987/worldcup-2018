@@ -70,14 +70,14 @@ export const MatchInputType = new GraphQLInputObjectType({
       awayTeam:{
           type: GraphQLID,
       },
-      finished: {
+      started: {
           type: GraphQLBoolean,
       },
       available: {
           type: GraphQLBoolean,
       },
       winner: {
-          type: GraphQLID,
+          type: GraphQLString,
       },
       endWay:{
           type: MatchEndwayEnumType,
@@ -104,13 +104,10 @@ export const MatchType = new GraphQLObjectType({
             type: GraphQLID
         },
         winner: {
-            type: GraphQLID
+            type: GraphQLString
         },
         stage: {
             type: MatchStageEnumType
-        },
-        finished: {
-            type: GraphQLBoolean
         },
         label: {
             type: MatchLabelEnumType
@@ -123,6 +120,9 @@ export const MatchType = new GraphQLObjectType({
         },
         available: {
             type: GraphQLBoolean
+        },
+        endWay: {
+            type: MatchEndwayEnumType
         }
     }
 });
