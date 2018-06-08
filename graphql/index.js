@@ -6,8 +6,6 @@ import {
 import mutations from './mutations';
 import queries from './queries';
 
-console.log(mutations);
-
 export default new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',

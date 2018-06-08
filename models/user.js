@@ -8,7 +8,8 @@ const recordSchema = new mongoose.Schema({
         required: true
     },
     guess: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        default: "draw"
     }
 });
 

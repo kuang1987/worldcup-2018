@@ -36,7 +36,8 @@ const matchSchema = new mongoose.Schema({
         default: 'NR'
     },
     winner: {
-        type: mongoose.Schema.Types.ObjectId
+        type: String,
+        default: "draw"
     },
     finished: {
         type: Boolean,

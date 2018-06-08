@@ -42,53 +42,23 @@ let teamNames = _.map(matches.teams, (team) => {
     return team.name;
 });
 
-// console.log(flagUrls);
-
-// Team.remove({}, (err) => {
-//     console.log(err);
-// });
-//
-// console.log(getTeamFlagUrl('Colombia', flagUrls));
-
-teams.forEach((team) => {
-    Team.findOneAndDelete({'name': team.name}, (err) => {
-        if (err) {console.log('delete team err!')}
-    });
-    let teamDoc = new Team();
-    teamDoc.name = team.name;
-    teamDoc.group = team.group;
-    teamDoc.flagUrl = getTeamFlagUrl(team.name, flagUrls)
-    console.log(teamDoc);
-    let players = [];
-    for(let i = 0; i < team.players.length; i++){
-        let player = team.players[i];
-        players.push(player);
-    }
-    teamDoc.players = players;
-    teamDoc.save((err, team) => {
-        if (err) { console.log(err) };
-        console.log(team.name);
-    })
-});
+const findTeam = (teamNames, index) => {
+    return Team.findOne({'name': teamNames[index] }).select('_id').exec()
+}
 
 _.keys(matches.groups).forEach((group) => {
     matches.groups[group].matches.forEach((match) => {
         Match.findOneAndDelete({'matchIndex': match.name}, (err) => {
             if (err) {console.log('delete match err!')}
-        });
-        Team.findOne({'name': teamNames[match.home_team - 1] }).select('_id').exec()
-            .then((home_team) => {
-                return Team.findOne({'name': teamNames[match.away_team - 1] }).select('_id').exec()
-                            .then((away_team) => {
-                                return [home_team._id, away_team._id]
-                            });
-            })
+            let result;
+            Promise.all([findTeam(teamNames, match.home_team - 1), findTeam(teamNames, match.away_team - 1)])
             .then((result) => {
+                console.log(result);
                 let matchDoc = new Match();
                 matchDoc.startTime = match.date;
                 matchDoc.matchIndex = match.name ;
-                matchDoc.homeTeam = result[0] ;
-                matchDoc.awayTeam = result[1] ;
+                matchDoc.homeTeam = result[0]._id ;
+                matchDoc.awayTeam = result[1]._id ;
                 matchDoc.stage = 'group' ;
                 matchDoc.label = group.toUpperCase() ;
                 matchDoc.matchDay = match.matchday ;
@@ -100,6 +70,7 @@ _.keys(matches.groups).forEach((group) => {
             }).catch((err) => {
                 console.log(`insert ${matchDoc.matchIndex} failed!`);
             });
+        });
     });
 });
 
@@ -107,22 +78,22 @@ _.keys(matches.knockout).forEach((type) => {
     matches.knockout[type].matches.forEach((match) => {
         Match.findOneAndDelete({'matchIndex': match.name}, (err) => {
             if (err) {console.log('delete match err!')}
-        });
-        let matchDoc = new Match();
-        matchDoc.startTime = match.date;
-        matchDoc.matchIndex = match.name ;
-        matchDoc.stage = 'knockout' ;
-        matchDoc.label = matches.knockout[type].name ;
-        matchDoc.matchDay = match.matchday ;
-        matchDoc.save().then((matchDoc) => {
-            console.log(`insert ${matchDoc.matchIndex} success!`);
-        }).catch((err) => {
-            console.log(`insert ${matchDoc.matchIndex} failed!`);
-            console.log(err);
+            let matchDoc = new Match();
+            matchDoc.startTime = match.date;
+            matchDoc.matchIndex = match.name ;
+            matchDoc.stage = 'knockout' ;
+            matchDoc.label = matches.knockout[type].name ;
+            matchDoc.matchDay = match.matchday ;
+            matchDoc.save().then((matchDoc) => {
+                console.log(`insert ${matchDoc.matchIndex} success!`);
+            }).catch((err) => {
+                console.log(`insert ${matchDoc.matchIndex} failed!`);
+                console.log(err);
+            });
         });
     });
 });
-
+//
 for(let i = 0; i < tzlist.length; i++){
     Tz.remove({'index': i}, (err) => {
         if (err) {console.log('delete tz err!')};
