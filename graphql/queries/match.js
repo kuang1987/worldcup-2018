@@ -38,7 +38,7 @@ export const Match = {
     }
   },
   async resolve (root, params, options, info) {
-    let started = false;
+    let started = undefined;
     if (params.id){
       params._id = params.id;
       delete params.id;
@@ -51,19 +51,33 @@ export const Match = {
 
     const matches = await models.Match.find(params).select(projection).exec();
     const user = await models.User.findOne({_id: options.user._id}).exec();
-    let tz_matches = _.map(matches, (match) => {
-          if (match.startTime){
+    console.log(matches);
+    let filter_started_match = _.reduce(matches, (res, match) =>{
+        if (started == undefined) {
+          res.push(match);
+        } else {
+          if (started == match.isMatchStarted(match.startTime)){
+            res.push(match);
+          }
+        }
+        return res;
+    }, []);
+    console.log(filter_started_match);
+    return _.map(filter_started_match, (match) => {
+          if (projection.startTime == 1){
             match.startTime = utils.displayStartTime(match.startTime, user.timezone);
-            return match;
+          }
+          if (projection.started == 1){
+            match.started = match.isMatchStarted(match.startTime);
           }
           return match;
         });
-    return _.reduce(tz_matches, (res, match) => {
-        if (started == match.isMatchStarted(match.startTime)) {
-          res.push(match);
-        }
-        return res;
-    },[])
+    // return _.reduce(tz_matches, (res, match) => {
+    //     if (started == match.isMatchStarted(match.startTime)) {
+    //       res.push(match);
+    //     }
+    //     return res;
+    // },[])
 
   }
 };

@@ -121,6 +121,9 @@ export const MatchType = new GraphQLObjectType({
         available: {
             type: GraphQLBoolean
         },
+        started: {
+            type: GraphQLBoolean
+        },
         endWay: {
             type: MatchEndwayEnumType
         }
