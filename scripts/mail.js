@@ -1,13 +1,25 @@
 import Email from 'email-templates';
+import path from 'path';
+
+const templateDir = path.join(__dirname, './emails')
 
 const email = new Email({
+  views: {
+      root: templateDir
+  },
   message: {
-    from: 'devops@seedlinktech.com'
+    from: 'Worldcup 2018<worldcup-2018@app.seedlinktech.com>'
   },
   // uncomment below to send emails in development/test env:
-  //send: true,
+  send: true,
   transport: {
-    jsonTransport: true
+    auth: {
+      user: 'mail-smtp-corp',
+      pass: 'Oko1GdzNJoAQ'
+    },
+    host: 'mail.smtp2go.com',
+    port: 587,
+    secure: false
   }
 });
 
@@ -18,7 +30,8 @@ email
       to: 'kevin.kong@seedlinktech.com'
     },
     locals: {
-      name: 'Kevin'
+      userEmail: 'kevin.kong@seedlinktech.com',
+      userPassword: '123456'
     }
   })
   .then(res => {

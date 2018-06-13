@@ -23,7 +23,8 @@
     "moment-timezone": "^0.5.17",
     "mongoose": "^5.1.2",
     "morgan": "^1.9.0",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "randomstring": "^1.1.5"
   },
   "devDependencies": {
     "argparse": "^1.0.10",
