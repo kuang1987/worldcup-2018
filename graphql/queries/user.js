@@ -38,6 +38,7 @@ export const UsersRanking = {
 
     return models.User
       .find({admin: false})
+      .sort({guessScore: -1})
       .select(projection)
       .exec();
   }

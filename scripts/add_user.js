@@ -45,8 +45,7 @@ parser.addArgument(
   '--password',
   {
     help: 'init password',
-    type: String,
-    required: true
+    type: String
   }
 );
 parser.addArgument(
@@ -66,11 +65,13 @@ const add_user = (args) => {
             email: useremail,
             admin: args.admin,
         });
+        let origin_password = '';
         if(args.admin){
-          user.hash_password = user.hashPassword(args.password);
+          origin_password = args.password;
         }else{
-          user.hash_password = randomstring.generate(7);
+          origin_password = randomstring.generate(7);
         }
+        user.hash_password = user.hashPassword(origin_password);
         user.save((err) => {
             if(err){
                 console.log(`Create user ${email} failed!`);
@@ -80,11 +81,11 @@ const add_user = (args) => {
               .send({
                 template: 'invitation',
                 message: {
-                  to: email
+                  to: useremail
                 },
                 locals: {
-                  userEmail: email,
-                  userPassword: '123456'
+                  userEmail: useremail,
+                  userPassword: origin_password
                 }
               })
               .then(res => {
