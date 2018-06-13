@@ -18,6 +18,12 @@ const matchSchema = new mongoose.Schema({
     awayTeam: {
         type: mongoose.Schema.Types.ObjectId,
     },
+    homeTeamName: {
+        type: String
+    },
+    awayTeamName: {
+        type: String
+    },
     homeTeamScore: {
         type: Number,
         min: -1,
@@ -45,6 +51,11 @@ const matchSchema = new mongoose.Schema({
         default: false
     },
     available: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    finished: {
         type: Boolean,
         required: true,
         default: false

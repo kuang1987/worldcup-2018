@@ -1,14 +1,27 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from lxml import etree
 import re
 import json
+import codecs
+
 
 def get_html_content(path):
-    with open(path, 'r') as f:
+    with codecs.open(path, 'r', 'utf-8') as f:
         content = f.read()
 
     return content
+
+
+def to_unicode(text):
+    if type(text) == unicode:
+        return text
+
+    if type(text) != str:
+        text = str(text)
+
+    return unicode(text, 'utf8')
 
 
 if __name__ == '__main__':
@@ -61,10 +74,14 @@ if __name__ == '__main__':
                 continue
             tds = tr.xpath('td')
             player['pos'] = tds[1].xpath('a')[0].text
+            player_name = ''
             if tr.xpath('th/a'):
-                player['name'] = tr.xpath('th/a')[0].text
+                #print type(tr.xpath('th/a')[0].text)
+                player_name = tr.xpath('th/a')[0].text
             else:
-                player['name'] = tr.xpath('th/span')[1].xpath('span/a')[0].text
+                player_name = tr.xpath('th/span')[1].xpath('span/a')[0].text
+            #player_name = to_unicode(player_name)
+            player['name'] = to_unicode(player_name)
             player['bday'] = tds[2].xpath('span/span')[0].text
             player['age'] = tds[2].xpath('span')[0].tail[-3:-1]
             index = index + 1
@@ -80,5 +97,5 @@ if __name__ == '__main__':
     print len(teams)
     print teams[0]
 
-    with open('teams.json', 'w') as f:
-        f.write(json.dumps(teams))
+    with codecs.open('teams.json', 'w', 'utf-8') as f:
+        f.write(json.dumps(teams, ensure_ascii=False))

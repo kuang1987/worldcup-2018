@@ -3,7 +3,8 @@ import {
   GraphQLID,
   GraphQLNonNull,
   GraphQLString,
-  GraphQLBoolean
+  GraphQLBoolean,
+  GraphQLInt
 } from 'graphql';
 
 import { MatchType, MatchStageEnumType, MatchLabelEnumType } from '../types';
@@ -35,6 +36,10 @@ export const Match = {
     started: {
         name: 'started',
         type: GraphQLBoolean
+    },
+    matchIndex: {
+        name: 'matchIndex',
+        type: GraphQLInt
     }
   },
   async resolve (root, params, options, info) {
@@ -49,9 +54,8 @@ export const Match = {
     }
     const projection = getProjection(info.fieldNodes[0]);
 
-    const matches = await models.Match.find(params).select(projection).exec();
+    const matches = await models.Match.find(params).select(projection).sort({matchIndex:1}).exec();
     const user = await models.User.findOne({_id: options.user._id}).exec();
-    console.log(matches);
     let filter_started_match = _.reduce(matches, (res, match) =>{
         if (started == undefined) {
           res.push(match);
@@ -72,12 +76,5 @@ export const Match = {
           }
           return match;
         });
-    // return _.reduce(tz_matches, (res, match) => {
-    //     if (started == match.isMatchStarted(match.startTime)) {
-    //       res.push(match);
-    //     }
-    //     return res;
-    // },[])
-
   }
 };

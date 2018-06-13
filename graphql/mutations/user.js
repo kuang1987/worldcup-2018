@@ -42,7 +42,7 @@ export const User = {
       }
       if (params.data.matchGuessRecord.guess != match.homeTeam &&
           params.data.matchGuessRecord.guess != match.awayTeam){
-              params.data.matchGuessRecord.guess = "draw";
+              params.data.matchGuessRecord.guess = "Draw";
           }
       let is_record_exist = false;
       for(let i = 0; i < user.matchGuessRecords.length; i++){

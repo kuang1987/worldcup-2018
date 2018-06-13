@@ -52,11 +52,39 @@ export const MatchEndwayEnumType = new GraphQLEnumType({
   values: matchEndwayEnumValue,
 });
 
+export const MatchInputActionEnumType = new GraphQLEnumType({
+  name: 'MatchInputActionEnumType',
+  description: 'action can do',
+  values: {
+    'OPEN': {
+      value: 'OPEN'
+    },
+    'CLOSE': {
+      value: 'CLOSE'
+    },
+    'FILL': {
+      value: 'FILL'
+    }
+  }
+});
+
+// export const MatchInputListType = new GraphQLInputObjectType({
+//   name: 'MatchInputListType'
+//   fields: {
+//     matches: {
+//         type: new GraphQLList(GraphQLID)
+//     },
+//     action: {
+//         type: new GraphQLNonNull(MatchInputActionEnumType)
+//     }
+//   }
+// })
+
 export const MatchInputType = new GraphQLInputObjectType({
   name: 'MatchInput',
   fields: {
-      _id: {
-          type: new GraphQLNonNull(GraphQLID)
+      matchIndex: {
+          type: new GraphQLNonNull(GraphQLInt)
       },
       homeTeamScore: {
           type: GraphQLInt
@@ -69,12 +97,6 @@ export const MatchInputType = new GraphQLInputObjectType({
       },
       awayTeam:{
           type: GraphQLID,
-      },
-      started: {
-          type: GraphQLBoolean,
-      },
-      available: {
-          type: GraphQLBoolean,
       },
       winner: {
           type: GraphQLString,
@@ -129,3 +151,27 @@ export const MatchType = new GraphQLObjectType({
         }
     }
 });
+
+export const MatchUpdatedErrorType = new GraphQLObjectType({
+    name: 'MatchUpdatedErrorType',
+    fields: {
+      _id: {
+          type: new GraphQLNonNull(GraphQLID)
+      },
+      message: {
+          type: GraphQLString
+      }
+    }
+})
+
+export const MatchUpdatedType = new GraphQLObjectType({
+    name: 'MatchUpdatedType',
+    fields: {
+        success: {
+            type: new GraphQLList(MatchType)
+        },
+        error: {
+            type: new GraphQLList(MatchUpdatedErrorType)
+        }
+    }
+})

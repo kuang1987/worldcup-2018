@@ -1,7 +1,7 @@
 import { User } from './user';
-import { Match } from './match';
+import { Match, Matches } from './match';
 
 module.exports = {
     User,
-    Match
+    Matches
 }

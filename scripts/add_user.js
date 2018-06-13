@@ -42,7 +42,7 @@ const add_user = (args) => {
         let user = new User({
             nickName: '',
             email: email,
-            admin: true,
+            admin: args.admin,
         });
         user.hash_password = user.hashPassword(args.password);
         console.log(user);

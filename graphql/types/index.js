@@ -1,6 +1,11 @@
 import { PlayerType, TeamType } from './team';
 import { UserType, UserInputType, UserRankingType, MatchGuessInputType, MatchGuessRecordType } from './user'
-import { MatchType, MatchInputType, MatchStageEnumType, MatchLabelEnumType } from './match'
+import { MatchType,
+         MatchInputType,
+         MatchStageEnumType,
+         MatchLabelEnumType,
+         MatchInputActionEnumType,
+         MatchUpdatedType} from './match'
 import { TzType } from './timezone'
 
 module.exports = {
@@ -13,7 +18,9 @@ module.exports = {
     MatchGuessRecordType,
     MatchType,
     MatchInputType,
+    MatchUpdatedType,
     MatchStageEnumType,
     MatchLabelEnumType,
+    MatchInputActionEnumType,
     TzType
 }

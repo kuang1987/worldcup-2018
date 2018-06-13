@@ -43,7 +43,7 @@ let teamNames = _.map(matches.teams, (team) => {
 });
 
 const findTeam = (teamNames, index) => {
-    return Team.findOne({'name': teamNames[index] }).select('_id').exec()
+    return Team.findOne({'name': teamNames[index] }).select('_id name').exec()
 }
 
 _.keys(matches.groups).forEach((group) => {
@@ -59,6 +59,8 @@ _.keys(matches.groups).forEach((group) => {
                 matchDoc.matchIndex = match.name ;
                 matchDoc.homeTeam = result[0]._id ;
                 matchDoc.awayTeam = result[1]._id ;
+                matchDoc.homeTeamName = result[0].name ;
+                matchDoc.awayTeamName = result[1].name ;
                 matchDoc.stage = 'group' ;
                 matchDoc.label = group.toUpperCase() ;
                 matchDoc.matchDay = match.matchday ;
@@ -80,7 +82,7 @@ _.keys(matches.knockout).forEach((type) => {
             if (err) {console.log('delete match err!')}
             let matchDoc = new Match();
             matchDoc.startTime = match.date;
-            matchDoc.matchIndex = match.name ;
+            matchDoc.matchIndex = match.name;
             matchDoc.stage = 'knockout' ;
             matchDoc.label = matches.knockout[type].name ;
             matchDoc.matchDay = match.matchday ;
@@ -95,9 +97,6 @@ _.keys(matches.knockout).forEach((type) => {
 });
 //
 for(let i = 0; i < tzlist.length; i++){
-    Tz.remove({'index': i}, (err) => {
-        if (err) {console.log('delete tz err!')};
-    });
     let now = moment();
     let offset = now.tz(tzlist[i].value).format('Z');
     let tzDoc = new Tz();

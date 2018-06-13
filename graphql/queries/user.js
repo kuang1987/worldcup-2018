@@ -37,7 +37,7 @@ export const UsersRanking = {
     const projection = getProjection(info.fieldNodes[0]);
 
     return models.User
-      .find()
+      .find({admin: false})
       .select(projection)
       .exec();
   }

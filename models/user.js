@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema({
     },
     timezone: {
         type: String,
-        default: '+08:00'
+        default: 'Asia/Shanghai'
     }
 });
 
