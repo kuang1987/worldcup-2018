@@ -55,6 +55,13 @@ parser.addArgument(
     action: 'storeTrue'
   }
 );
+parser.addArgument(
+  '--mail',
+  {
+    help: 'send mail?',
+    action: 'storeTrue'
+  }
+);
 const args = parser.parseArgs();
 
 const add_user = (args) => {
@@ -77,6 +84,9 @@ const add_user = (args) => {
                 console.log(`Create user ${email} failed!`);
             }
             console.log(`Create user ${email} success `);
+            if(!args.mail){
+                return;
+            }
             email
               .send({
                 template: 'invitation',
@@ -89,7 +99,7 @@ const add_user = (args) => {
                 }
               })
               .then(res => {
-                console.log('res.originalMessage', res.originalMessage)
+                console.log('success');
               })
               .catch((err) => console.log(err));
         });
